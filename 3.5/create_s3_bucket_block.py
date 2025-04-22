@@ -1,10 +1,13 @@
 from time import sleep
 from prefect_aws import S3Bucket, AwsCredentials
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def create_aws_creds_block():
     my_aws_creds_obj = AwsCredentials(
-        aws_access_key_id="123abc", aws_secret_access_key="abc123"
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
     )
     my_aws_creds_obj.save(name="my-aws-creds", overwrite=True)
 
@@ -12,7 +15,7 @@ def create_aws_creds_block():
 def create_s3_bucket_block():
     aws_creds = AwsCredentials.load("my-aws-creds")
     my_s3_bucket_obj = S3Bucket(
-        bucket_name="my-first-bucket-abc", credentials=aws_creds
+        bucket_name="mlops-zoomcamp-hal4zhou", credentials=aws_creds
     )
     my_s3_bucket_obj.save(name="s3-bucket-example", overwrite=True)
 
